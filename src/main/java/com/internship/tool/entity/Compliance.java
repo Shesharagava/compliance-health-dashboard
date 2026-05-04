@@ -2,7 +2,7 @@ package com.internship.tool.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 @Entity
 @Table(name = "compliance")
 public class Compliance {
@@ -21,6 +21,9 @@ public class Compliance {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "due_date")
+    private LocalDate dueDate;
 
    @PrePersist
 public void prePersist() {
