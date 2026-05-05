@@ -22,9 +22,15 @@ public class ComplianceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Compliance>> getAll() {
-        return ResponseEntity.ok(service.getAll());
-    }
+    //@PreAuthorize("hasAnyRole('ADMIN','MANAGER','VIEWER')")
+    public ResponseEntity<org.springframework.data.domain.Page<Compliance>> getAll(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDir
+) {
+    return ResponseEntity.ok(service.getAll(page, size, sortBy, sortDir));
+}
 
     @PostMapping
     public ResponseEntity<Compliance> create(@RequestBody Compliance compliance) {
@@ -65,4 +71,14 @@ public class ComplianceController {
                                             @RequestBody Compliance compliance) {
         return ResponseEntity.ok(service.update(id, compliance));
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<String> exportToCSV() {
+
+        String csv = service.exportToCSV();
+
+        return ResponseEntity.ok()
+            .header("Content-Disposition", "attachment; filename=compliance.csv")
+            .body(csv);
+}
 }
