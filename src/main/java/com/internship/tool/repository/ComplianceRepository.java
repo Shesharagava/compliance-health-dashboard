@@ -7,11 +7,15 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.time.LocalDate;
 public interface ComplianceRepository extends JpaRepository<Compliance, Long> {
 
    
     List<Compliance> findByStatus(String status);
+    List<Compliance> findByDueDateIsNotNullAndDueDateBeforeAndStatusNot(LocalDate date, String status);
+    List<Compliance> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<Compliance> findByDueDateBetween(LocalDate start, LocalDate end);
+    List<Compliance> findByDueDateBefore(LocalDate date);
 
 
     @Query("SELECT c FROM Compliance c WHERE c.createdAt BETWEEN :start AND :end")
